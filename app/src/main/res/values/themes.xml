@@ -1,0 +1,22 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.StudyBuddy" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.StudyBuddy" parent="Base.Theme.StudyBuddy" />
+
+    <style name="CalenderViewCustom" parent="Theme.StudyBuddy">
+        <item name="colorControlActivated">@color/teal</item>
+        <item name="android:textColorPrimary">@color/black</item>
+    </style>
+
+    <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Medium">
+        <item name="android:textColor">@drawable/calender_colours</item>
+    </style>
+
+    <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Medium">
+        <item name="android:textColor">@color/black</item>
+    </style>
+</resources>

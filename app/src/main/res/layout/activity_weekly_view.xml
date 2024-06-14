@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/weeklyView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context=".WeeklyViewActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:onClick="backToMonthlyView"
+            android:text="&lt; Back"
+            android:textColor="@color/black"
+            android:textSize="11sp" />
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:onClick="newEventAction"
+            android:scaleType="fitCenter"
+            android:src="@drawable/add"
+            android:padding="5dp"/>
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@android:color/transparent"
+            android:contentDescription="View previous week"
+            android:onClick="goBackInCalender"
+            android:scaleType="fitCenter"
+            android:src="@drawable/back" />
+        <com.harrywhewell.scrolldatepicker.DayScrollDatePicker
+            android:id="@+id/day_date_picker"
+            android:layout_width="0dp"
+            android:padding="5dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:baseTextColor="@color/black"
+            app:selectedColor="@color/teal"
+            app:selectedTextColor="@color/lblue"
+            app:showTitle="true"
+            app:showFullDate="false" />
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@android:color/transparent"
+            android:contentDescription="View next week"
+            android:onClick="forwardCalender"
+            android:scaleType="fitCenter"
+            android:src="@drawable/forward" />
+    </LinearLayout>
+    <ListView
+        android:id="@+id/hourListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"/>
+
+
+</LinearLayout>
