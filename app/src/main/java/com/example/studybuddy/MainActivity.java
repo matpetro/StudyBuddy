@@ -84,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
         } else if (!Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(this, PopupPermissionActivity.class);
             startActivity(intent);
+        } else {
+            // TODO this needs to be moved to its own section
+            Intent intent = new Intent(this, AppSelectActivity.class);
+            startActivity(intent);
         }
 
     }

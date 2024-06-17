@@ -44,7 +44,7 @@ public class AppLockService extends Service {
         runnable = new Runnable() {
             public void run() {
                 String app = getForegroundApp();
-                // TODO figure out what kind of app names it gives back and if it works
+                // TODO figure out how to check if the open app is in a set of blocked apps
                 System.out.println("Hellloooo " + app);
                 if("com.google.android.youtube".equals(app)){
                     showBlockScreen();
