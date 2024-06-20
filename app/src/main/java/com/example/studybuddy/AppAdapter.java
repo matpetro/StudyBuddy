@@ -21,31 +21,18 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 
 // allows us to use a custom component to represent the apps on the phone with a list view
 public class AppAdapter extends ArrayAdapter<ApplicationInfo> {
-    private List<ApplicationInfo> appsList = null;
+    private List<AppInfo> appsList = null;
     private Context context;
-    private PackageManager packageManager;
-    private ArrayList<Boolean> checkList = new ArrayList<>();
 
-    public AppAdapter(Context context, int textViewResourceId,
-                              List<ApplicationInfo> appsList) {
-        super(context, textViewResourceId, appsList);
+    public AppAdapter(Context context, int textViewResourceId) {
+        super(context, textViewResourceId);
         this.context = context;
-        this.appsList = appsList;
-        packageManager = context.getPackageManager();
-
-        for (int i = 0; i < appsList.size(); i++) {
-            checkList.add(false);
-        }
+        this.appsList = new ArrayList<>(AppInfo.appInfoHashMap.values());
     }
 
     @Override
     public int getCount() {
         return ((null != appsList) ? appsList.size() : 0);
-    }
-
-    @Override
-    public ApplicationInfo getItem(int position) {
-        return ((null != appsList) ? appsList.get(position) : null);
     }
 
     @NonNull
@@ -58,18 +45,18 @@ public class AppAdapter extends ArrayAdapter<ApplicationInfo> {
             view = layoutInflater.inflate(R.layout.app_cell, null);
         }
 
-        ApplicationInfo data = appsList.get(position);
+        AppInfo data = appsList.get(position);
         if (null != data) {
             TextView appName = view.findViewById(R.id.app_name);
             ImageView iconView = view.findViewById(R.id.app_icon);
 
             SwitchMaterial switchButton = view.findViewById(R.id.switch_app);
             switchButton.setTag(position); // set the tag so we can identify the correct row in the listener
-            switchButton.setChecked(checkList.get(position)); // set the status as we stored it
+            switchButton.setChecked(data.isBlocked()); // set the status as we stored it
             switchButton.setOnCheckedChangeListener(mListener); // set the listener
 
-            appName.setText(data.loadLabel(packageManager));
-            iconView.setImageDrawable(data.loadIcon(packageManager));
+            appName.setText(data.getName());
+            iconView.setImageDrawable(data.getLogo());
         }
         return view;
     }
@@ -77,7 +64,14 @@ public class AppAdapter extends ArrayAdapter<ApplicationInfo> {
     CompoundButton.OnCheckedChangeListener mListener = new CompoundButton.OnCheckedChangeListener() {
 
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            checkList.set((Integer)buttonView.getTag(),isChecked); // get the tag so we know the row and store the status
+            // when an app switch is pressed, update its blocked status
+            AppInfo data = appsList.get((Integer)buttonView.getTag());
+            data.setBlocked(isChecked);
+//            for (AppInfo x : appsList){
+//                System.out.println("Name: " + x.getName() + " Pkg: " + x.getPkg() + " Blocked: " + x.isBlocked());
+//                AppInfo y = AppInfo.appInfoHashMap.get(x.getPkg());
+//                System.out.println("Name: " + y.getName() + " Pkg: " + y.getPkg() + " Blocked: " + y.isBlocked());
+//            }
         }
     };
 }

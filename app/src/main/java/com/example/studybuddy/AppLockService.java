@@ -44,9 +44,8 @@ public class AppLockService extends Service {
         runnable = new Runnable() {
             public void run() {
                 String app = getForegroundApp();
-                // TODO figure out how to check if the open app is in a set of blocked apps
-                System.out.println("Hellloooo " + app);
-                if("com.google.android.youtube".equals(app)){
+                // TODO Have the case for always block now we must do a case for time specific block
+                if(AppInfo.alwaysBlock && AppInfo.appInfoHashMap.containsKey(app) && AppInfo.appInfoHashMap.get(app).isBlocked()){
                     showBlockScreen();
                 }
                 Toast.makeText(context, "Service is still running", Toast.LENGTH_LONG).show();
@@ -82,9 +81,6 @@ public class AppLockService extends Service {
     }
     public void showBlockScreen(){
         System.out.println("This is running");
-//        Intent intent = new Intent(this, BlockActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(intent);
         // TODO Make a nicer block screen
         BlockWindow window= new BlockWindow(this);
         window.open();

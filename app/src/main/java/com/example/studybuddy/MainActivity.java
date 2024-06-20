@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.View;
 import android.widget.CalendarView;
 
 import androidx.activity.EdgeToEdge;
@@ -84,11 +85,12 @@ public class MainActivity extends AppCompatActivity {
         } else if (!Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(this, PopupPermissionActivity.class);
             startActivity(intent);
-        } else {
-            // TODO this needs to be moved to its own section
-            Intent intent = new Intent(this, AppSelectActivity.class);
-            startActivity(intent);
         }
 
+    }
+
+    public void viewBlockedApps(View view) {
+        Intent intent = new Intent(this, AppSelectActivity.class);
+        startActivity(intent);
     }
 }
