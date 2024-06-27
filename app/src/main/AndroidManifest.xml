@@ -16,26 +16,18 @@
         android:theme="@style/Theme.StudyBuddy"
         tools:targetApi="31">
         <activity
-            android:name=".AppSelectActivity"
-            android:exported="false" />
-        <activity
             android:name=".PopupPermissionActivity"
             android:exported="false" />
         <activity
             android:name=".UsagePermissionActivity"
             android:exported="false" />
-
         <service
             android:name=".AppLockService"
             android:enabled="true"
             android:exported="true"
             android:stopWithTask="true" />
-
         <activity
             android:name=".EventEditActivity"
-            android:exported="false" />
-        <activity
-            android:name=".WeeklyViewActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

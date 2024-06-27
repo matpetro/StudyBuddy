@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CalendarView;
 
@@ -16,10 +17,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,33 +35,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
-        // grabbing our calender view by ID
-        CalendarView calendarView = findViewById(R.id.calendarView);
-        // when user touches a date
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        // Set initial fragment
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.flFragment, new HomeFragment())
+                    .commit();
+        }
+
+        // Set listener for navigation item selection
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                //System.out.println(year + " " + month + " " + dayOfMonth);
-                Calendar selectedDate = Calendar.getInstance();
-                selectedDate.set(year, month, dayOfMonth);
-                int weekOfYear = selectedDate.get(Calendar.WEEK_OF_YEAR);
-                //System.out.println("week of year: "+ weekOfYear);
-                selectedDate.clear();
-                selectedDate.set(Calendar.WEEK_OF_YEAR, weekOfYear);
-                selectedDate.set(Calendar.YEAR, year);
-                // Set the first day of the week to Sunday
-                selectedDate.setFirstDayOfWeek(Calendar.SUNDAY);
-                // Get the last day of the week
-                Calendar lastDayOfWeek = (Calendar) selectedDate.clone();
-                lastDayOfWeek.add(Calendar.DAY_OF_WEEK, 7);
-                // Extract day, month, and year from first day of the week
-                int[] firstDay = {selectedDate.get(Calendar.DAY_OF_MONTH), selectedDate.get(Calendar.MONTH) + 1, selectedDate.get(Calendar.YEAR)};
-                int[] lastDay = {lastDayOfWeek.get(Calendar.DAY_OF_MONTH), lastDayOfWeek.get(Calendar.MONTH) + 1, lastDayOfWeek.get(Calendar.YEAR)};
-                int[] selectedDay = {dayOfMonth, month + 1, year};
-                weeklyAction(firstDay, lastDay, selectedDay);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return switchFragment(item.getItemId());
             }
         });
 
@@ -62,14 +58,15 @@ public class MainActivity extends AppCompatActivity {
         startService(new Intent(this, AppLockService.class));
     }
 
-    public void weeklyAction(int[] startOfWeek, int[] endOfWeek, int[] selectedDay){
-        // define that we want to switch activities
-        Intent intent = new Intent(this, WeeklyViewActivity.class);
-        // add the extra info we want the next activity to have access to
-        intent.putExtra("startOfWeek", startOfWeek);
-        intent.putExtra("endOfWeek", endOfWeek);
-        intent.putExtra("selectedDay", selectedDay);
-        startActivity(intent);
+    protected void highlightCalenderItem(){
+        bottomNavigationView.setOnItemSelectedListener(null);
+        bottomNavigationView.setSelectedItemId(R.id.nav_calendar);
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return switchFragment(item.getItemId());
+            }
+        });
     }
 
     private void checkPermissions(){
@@ -89,8 +86,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void viewBlockedApps(View view) {
-        Intent intent = new Intent(this, AppSelectActivity.class);
-        startActivity(intent);
+    private boolean switchFragment(int itemId) {
+        Fragment selectedFragment = null;
+
+        if (itemId == R.id.nav_home){
+            selectedFragment = new HomeFragment();
+        } else if (itemId == R.id.nav_calendar){
+            selectedFragment = new CalendarFragment();
+        }else if (itemId == R.id.nav_settings){
+            selectedFragment = new SettingsFragment();
+        }
+
+        // Perform the fragment transaction
+        if (selectedFragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.flFragment, selectedFragment)
+                    .commit();
+            return true;
+        }
+
+        return false;
     }
 }

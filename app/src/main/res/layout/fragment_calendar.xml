@@ -6,36 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
-    tools:context=".WeeklyViewActivity">
+    android:gravity="center_horizontal">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="3dp">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:background="@android:color/transparent"
-            android:onClick="backToMonthlyView"
-            android:text="&lt; Back"
-            android:textColor="@color/black"
-            android:textSize="11sp" />
         <ImageButton
+            android:id="@+id/addNewEventButton"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"
-            android:onClick="newEventAction"
             android:scaleType="fitCenter"
             android:src="@drawable/add"
             android:padding="5dp"/>
     </RelativeLayout>
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,12 +31,12 @@
         android:padding="5dp">
 
         <ImageButton
+            android:id="@+id/calendarBack"
             android:layout_width="25dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="@android:color/transparent"
             android:contentDescription="View previous week"
-            android:onClick="goBackInCalender"
             android:scaleType="fitCenter"
             android:src="@drawable/back" />
         <com.harrywhewell.scrolldatepicker.DayScrollDatePicker
@@ -65,12 +52,12 @@
             app:showTitle="true"
             app:showFullDate="false" />
         <ImageButton
+            android:id="@+id/calendarForward"
             android:layout_width="25dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="@android:color/transparent"
             android:contentDescription="View next week"
-            android:onClick="forwardCalender"
             android:scaleType="fitCenter"
             android:src="@drawable/forward" />
     </LinearLayout>
