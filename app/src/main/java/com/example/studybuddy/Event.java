@@ -14,9 +14,10 @@ public class Event
 
         for(Event event : eventsList)
         {
-            int eventHour = event.time.getHour();
+            int eventStartHour = event.fromTime.getHour();
+            int eventEndHour = event.toTime.getHour();
             int cellHour = time.getHour();
-            if(event.getDate().equals(date) && eventHour == cellHour)
+            if(event.getDate().equals(date) && cellHour >= eventStartHour  && cellHour < eventEndHour)
                 events.add(event);
         }
 
@@ -26,13 +27,19 @@ public class Event
 
     private String name;
     private LocalDate date;
-    private LocalTime time;
+    private LocalTime fromTime;
+    private LocalTime toTime;
+    private String descr;
+    private boolean block;
 
-    public Event(String name, LocalDate date, LocalTime time)
+    public Event(String name, LocalDate date, LocalTime fromTime, LocalTime toTime, String descr, boolean block)
     {
         this.name = name;
         this.date = date;
-        this.time = time;
+        this.fromTime = fromTime;
+        this.toTime = toTime;
+        this.descr = descr;
+        this.block = block;
     }
 
     public String getName()
@@ -55,13 +62,35 @@ public class Event
         this.date = date;
     }
 
-    public LocalTime getTime()
-    {
-        return time;
+    public String getDescr() {
+        return descr;
     }
 
-    public void setTime(LocalTime time)
-    {
-        this.time = time;
+    public void setDescr(String descr) {
+        this.descr = descr;
+    }
+
+    public boolean isBlock() {
+        return block;
+    }
+
+    public void setBlock(boolean block) {
+        this.block = block;
+    }
+
+    public LocalTime getFromTime() {
+        return fromTime;
+    }
+
+    public void setFromTime(LocalTime fromTime) {
+        this.fromTime = fromTime;
+    }
+
+    public LocalTime getToTime() {
+        return toTime;
+    }
+
+    public void setToTime(LocalTime toTime) {
+        this.toTime = toTime;
     }
 }
