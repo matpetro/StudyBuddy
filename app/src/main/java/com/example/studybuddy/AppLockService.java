@@ -1,26 +1,16 @@
 package com.example.studybuddy;
 
-import android.app.ActivityManager;
 import android.app.Service;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
-import android.provider.Settings;
 import android.widget.Toast;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -41,19 +31,17 @@ public class AppLockService extends Service {
 
     @Override
     public void onCreate() {
-        Toast.makeText(this, "Service created!", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Service created!", Toast.LENGTH_LONG).show();
 
         handler = new Handler();
-        runnable = new Runnable() {
-            public void run() {
-                String app = getForegroundApp();
-                boolean hourlyBlock = checkHourlyBlock();
-                if((AppInfo.alwaysBlock || hourlyBlock) && AppInfo.appInfoHashMap.containsKey(app) && AppInfo.appInfoHashMap.get(app).isBlocked()){
-                    showBlockScreen();
-                }
-                Toast.makeText(context, "Service is still running", Toast.LENGTH_LONG).show();
-                handler.postDelayed(runnable, 10000);
+        runnable = () -> {
+            String app = getForegroundApp();
+            boolean hourlyBlock = checkHourlyBlock();
+            if((AppInfo.alwaysBlock || hourlyBlock) && AppInfo.appInfoHashMap.containsKey(app) && AppInfo.appInfoHashMap.get(app).isBlocked()){
+                showBlockScreen();
             }
+            //Toast.makeText(context, "Service is still running", Toast.LENGTH_LONG).show();
+            handler.postDelayed(runnable, 10000);
         };
 
         handler.postDelayed(runnable, 15000);

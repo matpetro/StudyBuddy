@@ -81,7 +81,7 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
             setEvent(event1, events.get(0));
             setEvent(event2, events.get(1));
             event3.setVisibility(View.VISIBLE);
-            String eventsNotShown = String.valueOf(events.size() - 2) + " More Events";
+            String eventsNotShown = events.size() - 2 + " More Events";
             event3.setText(eventsNotShown);
         }
     }
@@ -91,14 +91,11 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         textView.setText(event.getName());
         textView.setVisibility(View.VISIBLE);
 
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), EventInfoActivity.class);
-                intent.putExtra("selectedEvent", event);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getContext().startActivity(intent);
-            }
+        textView.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), EventInfoActivity.class);
+            intent.putExtra("selectedEvent", event);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
         });
     }
 

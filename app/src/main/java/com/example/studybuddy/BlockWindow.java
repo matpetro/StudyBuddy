@@ -34,12 +34,7 @@ public class BlockWindow {
         mView = layoutInflater.inflate(R.layout.block_window, null);
         // set onClickListener on the remove button, which removes
         // the view from the window
-        mView.findViewById(R.id.window_close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                close();
-            }
-        });
+        mView.findViewById(R.id.window_close).setOnClickListener(view -> close());
         mWindowManager = (WindowManager)context.getSystemService(WINDOW_SERVICE);
 
     }
@@ -75,11 +70,10 @@ public class BlockWindow {
     }
 
     public void backToHome() {
-        System.out.println("Workingdsajksdnbsjakbdka");
-        Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
-        startHomescreen.addCategory(Intent.CATEGORY_HOME);
-        startHomescreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(startHomescreen);
+        Intent startHomeScreen = new Intent(Intent.ACTION_MAIN);
+        startHomeScreen.addCategory(Intent.CATEGORY_HOME);
+        startHomeScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startHomeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(startHomeScreen);
     }
 }

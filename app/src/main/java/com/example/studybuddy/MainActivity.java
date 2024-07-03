@@ -1,18 +1,13 @@
 package com.example.studybuddy;
 
-import android.app.AlertDialog;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.CalendarView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -47,12 +42,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Set listener for navigation item selection
-        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                return switchFragment(item.getItemId());
-            }
-        });
+        bottomNavigationView.setOnItemSelectedListener(item -> switchFragment(item.getItemId()));
 
         checkPermissions();
         startService(new Intent(this, AppLockService.class));
@@ -61,12 +51,7 @@ public class MainActivity extends AppCompatActivity {
     protected void highlightCalenderItem(){
         bottomNavigationView.setOnItemSelectedListener(null);
         bottomNavigationView.setSelectedItemId(R.id.nav_calendar);
-        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                return switchFragment(item.getItemId());
-            }
-        });
+        bottomNavigationView.setOnItemSelectedListener(item -> switchFragment(item.getItemId()));
     }
 
     private void checkPermissions(){

@@ -21,7 +21,6 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 
 public class CalendarFragment extends Fragment {
@@ -49,24 +48,9 @@ public class CalendarFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         context = view.getContext();
         v = view;
-        view.findViewById(R.id.addNewEventButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                newEventAction(v);
-            }
-        });
-        view.findViewById(R.id.calendarBack).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goBackInCalender(v);
-            }
-        });
-        view.findViewById(R.id.calendarForward).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                forwardCalender(v);
-            }
-        });
+        view.findViewById(R.id.addNewEventButton).setOnClickListener(this::newEventAction);
+        view.findViewById(R.id.calendarBack).setOnClickListener(this::goBackInCalender);
+        view.findViewById(R.id.calendarForward).setOnClickListener(this::forwardCalender);
         setUpPicker();
         daySelected();
     }
@@ -120,13 +104,10 @@ public class CalendarFragment extends Fragment {
     }
 
     private void daySelected() {
-        OnDateSelectedListener listener = new OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(Date date) {
-                if (date != null) {
-                    currentSelectedDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    setHourAdapter();
-                }
+        OnDateSelectedListener listener = date -> {
+            if (date != null) {
+                currentSelectedDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                setHourAdapter();
             }
         };
         mPicker.getSelectedDate(listener);

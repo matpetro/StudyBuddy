@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -42,12 +41,7 @@ public class SettingsFragment extends Fragment {
         listView = view.findViewById(R.id.appListView);
         SwitchMaterial switchButton = view.findViewById(R.id.keep_blocked_switch);
         switchButton.setChecked(AppInfo.alwaysBlock); // set the status as we stored it
-        switchButton.setOnCheckedChangeListener(new SwitchMaterial.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                AppInfo.alwaysBlock = isChecked;
-            }
-        });
+        switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> AppInfo.alwaysBlock = isChecked);
         getAllApps();
     }
 
