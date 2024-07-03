@@ -11,10 +11,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.Settings;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -61,6 +65,12 @@ public class HomeFragment extends Fragment {
                 weeklyAction(firstDay, lastDay, selectedDay);
             }
         });
+
+        ListView upcomingEventsView = view.findViewById(R.id.upcomingListView);
+        UpcomingEventAdapter appAdapter = new UpcomingEventAdapter(view.getContext(), Event.eventsList.subList(0, Math.min(5, Event.eventsList.size())));
+        upcomingEventsView.setAdapter(appAdapter);
+        // set the empty view, which is what is shown when the adapter is empty. Must be defined in xml
+        upcomingEventsView.setEmptyView(view.findViewById(R.id.empty_view));
     }
 
     public void weeklyAction(int[] startOfWeek, int[] endOfWeek, int[] selectedDay){

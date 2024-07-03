@@ -69,8 +69,4 @@ public class SettingsFragment extends Fragment {
         AppAdapter appAdapter = new AppAdapter(context, R.layout.app_cell);
         listView.setAdapter(appAdapter);
     }
-
-//    public void backToMain(View view) {
-//        context.finish();
-//    }
 }

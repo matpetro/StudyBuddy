@@ -67,11 +67,6 @@ public class AppAdapter extends ArrayAdapter<ApplicationInfo> {
             // when an app switch is pressed, update its blocked status
             AppInfo data = appsList.get((Integer)buttonView.getTag());
             data.setBlocked(isChecked);
-//            for (AppInfo x : appsList){
-//                System.out.println("Name: " + x.getName() + " Pkg: " + x.getPkg() + " Blocked: " + x.isBlocked());
-//                AppInfo y = AppInfo.appInfoHashMap.get(x.getPkg());
-//                System.out.println("Name: " + y.getName() + " Pkg: " + y.getPkg() + " Blocked: " + y.isBlocked());
-//            }
         }
     };
 }

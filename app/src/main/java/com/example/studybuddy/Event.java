@@ -3,10 +3,25 @@ package com.example.studybuddy;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Event
 {
-    public static ArrayList<Event> eventsList = new ArrayList<>();
+    public static ArrayList<Event> eventsList = new ArrayList<Event>() {
+        @Override
+        public boolean add(Event mt) {
+            super.add(mt);
+            this.sort((event1, event2) -> {
+                int dateComparison = event1.getDate().compareTo(event2.getDate());
+                if (dateComparison == 0) {
+                    return event1.getFromTime().compareTo(event2.getFromTime());
+                } else {
+                    return dateComparison;
+                }
+            });
+            return true;
+        }
+    };
 
     public static ArrayList<Event> eventsForDateAndTime(LocalDate date, LocalTime time)
     {

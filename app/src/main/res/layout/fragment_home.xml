@@ -26,8 +26,19 @@
 
         />
     <ListView
+        android:id="@+id/upcomingListView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5" />
-
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Events Found"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:visibility="gone"/>
 </LinearLayout>
