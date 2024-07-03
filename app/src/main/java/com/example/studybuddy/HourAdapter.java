@@ -1,6 +1,7 @@
 package com.example.studybuddy;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +90,16 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
     {
         textView.setText(event.getName());
         textView.setVisibility(View.VISIBLE);
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), EventInfoActivity.class);
+                intent.putExtra("selectedEvent", event);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(intent);
+            }
+        });
     }
 
     private void hideEvent(TextView tv)

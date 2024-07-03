@@ -26,6 +26,8 @@ import java.util.Calendar;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+
+    ListView upcomingEventsView;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -35,6 +37,12 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUpcomingEventAdapter(getView());
     }
 
     @Override
@@ -66,9 +74,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        ListView upcomingEventsView = view.findViewById(R.id.upcomingListView);
-        UpcomingEventAdapter appAdapter = new UpcomingEventAdapter(view.getContext(), Event.eventsList.subList(0, Math.min(5, Event.eventsList.size())));
-        upcomingEventsView.setAdapter(appAdapter);
+        upcomingEventsView = view.findViewById(R.id.upcomingListView);
+        setUpcomingEventAdapter(view);
         // set the empty view, which is what is shown when the adapter is empty. Must be defined in xml
         upcomingEventsView.setEmptyView(view.findViewById(R.id.empty_view));
     }
@@ -88,6 +95,12 @@ public class HomeFragment extends Fragment {
         if (mainActivity != null) {
             mainActivity.highlightCalenderItem();
         }
+    }
+
+    private void setUpcomingEventAdapter(View view)
+    {
+        UpcomingEventAdapter adapter = new UpcomingEventAdapter(view.getContext(), Event.eventsList.subList(0, Math.min(5, Event.eventsList.size())));
+        upcomingEventsView.setAdapter(adapter);
     }
 
 }

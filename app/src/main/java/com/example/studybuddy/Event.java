@@ -1,11 +1,13 @@
 package com.example.studybuddy;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
-public class Event
+public class Event implements Serializable
 {
     public static ArrayList<Event> eventsList = new ArrayList<Event>() {
         @Override
@@ -107,5 +109,23 @@ public class Event
 
     public void setToTime(LocalTime toTime) {
         this.toTime = toTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return block == event.block &&
+                Objects.equals(name, event.name) &&
+                Objects.equals(date, event.date) &&
+                Objects.equals(fromTime, event.fromTime) &&
+                Objects.equals(toTime, event.toTime) &&
+                Objects.equals(descr, event.descr);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, date, fromTime, toTime, descr, block);
     }
 }
