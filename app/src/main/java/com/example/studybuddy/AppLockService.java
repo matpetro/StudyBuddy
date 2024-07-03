@@ -17,11 +17,14 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.widget.Toast;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class AppLockService extends Service {
 
@@ -44,8 +47,8 @@ public class AppLockService extends Service {
         runnable = new Runnable() {
             public void run() {
                 String app = getForegroundApp();
-                // TODO Have the case for always block now we must do a case for time specific block
-                if(AppInfo.alwaysBlock && AppInfo.appInfoHashMap.containsKey(app) && AppInfo.appInfoHashMap.get(app).isBlocked()){
+                boolean hourlyBlock = checkHourlyBlock();
+                if((AppInfo.alwaysBlock || hourlyBlock) && AppInfo.appInfoHashMap.containsKey(app) && AppInfo.appInfoHashMap.get(app).isBlocked()){
                     showBlockScreen();
                 }
                 Toast.makeText(context, "Service is still running", Toast.LENGTH_LONG).show();
@@ -54,6 +57,14 @@ public class AppLockService extends Service {
         };
 
         handler.postDelayed(runnable, 15000);
+    }
+
+    private boolean checkHourlyBlock() {
+        LocalTime currTime = LocalTime.now();
+        List<Event> events = Event.eventsList.stream().filter(event -> event.getDate().equals(LocalDate.now())
+                && currTime.isAfter(event.getFromTime()) && currTime.isBefore(event.getToTime())).collect(Collectors.toList());
+        return events.stream().anyMatch(Event::isBlock);
+
     }
 
     @Override
@@ -80,8 +91,6 @@ public class AppLockService extends Service {
         return currentApp;
     }
     public void showBlockScreen(){
-        System.out.println("This is running");
-        // TODO Make a nicer block screen
         BlockWindow window= new BlockWindow(this);
         window.open();
     }
