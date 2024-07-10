@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/permPopup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -22,8 +23,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Allow"
-        android:textColor="@color/lblue"
-        android:background="@null"
+        android:textColor="@color/lgray"
+        android:backgroundTint="@color/teal"
         android:textStyle="bold"
         android:onClick="checkPopupPermission"
         android:layout_gravity="center"
@@ -35,13 +36,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Done"
-        android:textColor="@color/lblue"
-        android:background="@null"
+        android:textColor="@color/lgray"
+        android:backgroundTint="@color/teal"
         android:textStyle="bold"
         android:onClick="nextScreenAction"
         android:layout_gravity="center"
         android:visibility="invisible"
         android:textSize="20sp"/>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:src="@drawable/allow"/>
+
+
 
 
 </LinearLayout>

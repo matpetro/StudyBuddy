@@ -30,6 +30,7 @@ android {
 
 dependencies {
     implementation("com.github.gastricspark:scrolldatepicker:0.0.1")
+    implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.23")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

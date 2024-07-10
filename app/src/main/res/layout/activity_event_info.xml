@@ -9,14 +9,44 @@
     android:paddingHorizontal="20dp"
     tools:context=".EventInfoActivity">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Event Information"
-        android:textSize="25dp"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        />
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/settings_logo"
+            android:visibility="invisible"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Event Information"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            android:onClick="closeEventInfo"
+            android:src="@drawable/exit" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/eventInfoNameTV"

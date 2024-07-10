@@ -53,4 +53,8 @@ public class EventInfoActivity extends AppCompatActivity {
         System.out.println(Event.eventsList);
         finish();
     }
+
+    public void closeEventInfo(View view) {
+        finish();
+    }
 }

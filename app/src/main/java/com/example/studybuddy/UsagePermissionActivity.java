@@ -3,12 +3,16 @@ package com.example.studybuddy;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public class UsagePermissionActivity extends AppCompatActivity {
 
@@ -19,6 +23,11 @@ public class UsagePermissionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_usage_permission);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.usagePopup), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+            return insets;
+        });
         usagePermDone = findViewById(R.id.usagePermDone);
     }
 
@@ -29,8 +38,9 @@ public class UsagePermissionActivity extends AppCompatActivity {
         Uri uri = Uri.fromParts("package", this.getPackageName(), null);
         intent.setData(uri);
         startActivity(intent);
-        // TODO should we stop the button from showing until the permission has been allowed?
-        usagePermDone.setVisibility(View.VISIBLE);
+        Handler handler = new Handler();
+        handler.postDelayed(() -> usagePermDone.setVisibility(View.VISIBLE), 1000);
+
     }
 
     public void nextScreenAction(View view) {
