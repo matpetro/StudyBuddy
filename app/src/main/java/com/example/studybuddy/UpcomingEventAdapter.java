@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-// allows us to use a custom component to represent the apps on the phone with a list view
+// Adapter to display the events in the upcming tab
 public class UpcomingEventAdapter extends ArrayAdapter<Event> {
     public UpcomingEventAdapter(Context context, List<Event> events) {
         super(context, 0, events);
@@ -29,6 +29,7 @@ public class UpcomingEventAdapter extends ArrayAdapter<Event> {
             convertView = layoutInflater.inflate(R.layout.upcoming_cell, null);
         }
 
+        // get the events passed and make a cell for each of them
         Event event = getItem(position);
         TextView eventName = convertView.findViewById(R.id.upEventNameTV);
         TextView eventDate = convertView.findViewById(R.id.upEventDateTV);
@@ -41,6 +42,7 @@ public class UpcomingEventAdapter extends ArrayAdapter<Event> {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         eventTime.setText(event.getFromTime().format(timeFormatter));
 
+        // set the on click listener to bring you to the event info page
         eventLayout.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), EventInfoActivity.class);
             intent.putExtra("selectedEvent", event);

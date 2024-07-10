@@ -3,6 +3,7 @@ package com.example.studybuddy;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+// Holds the events for a specific hour
 class HourEvent
 {
     LocalTime time;

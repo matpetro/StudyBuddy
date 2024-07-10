@@ -14,6 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+// Activity that asks and directs users to allow for the app to track usage (to determine if foreground app needs to be blocked)
 public class UsagePermissionActivity extends AppCompatActivity {
 
     Button usagePermDone;
@@ -31,6 +32,7 @@ public class UsagePermissionActivity extends AppCompatActivity {
         usagePermDone = findViewById(R.id.usagePermDone);
     }
 
+    // redirects user to the settings to switch on the permission
     public void checkUsageAccess(View view) {
         Intent intent = new Intent();
         intent.setAction(Settings.ACTION_USAGE_ACCESS_SETTINGS);
@@ -43,6 +45,7 @@ public class UsagePermissionActivity extends AppCompatActivity {
 
     }
 
+    // checks if the other permission needs to be done or not
     public void nextScreenAction(View view) {
         if (!Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(this, PopupPermissionActivity.class);

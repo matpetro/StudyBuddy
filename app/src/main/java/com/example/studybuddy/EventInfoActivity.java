@@ -25,10 +25,13 @@ public class EventInfoActivity extends AppCompatActivity {
             v.setPadding(30, systemBars.top, 30, systemBars.bottom);
             return insets;
         });
+
+        // The event object is passed to this activity
         event = (Event) getIntent().getSerializableExtra("selectedEvent");
         setUpView();
     }
 
+    // Shows all the details of the passed event object
     private void setUpView() {
         TextView name = findViewById(R.id.eventInfoNameTV);
         TextView date = findViewById(R.id.eventInfoDateTV);
@@ -46,14 +49,13 @@ public class EventInfoActivity extends AppCompatActivity {
         blocked.setText(String.format("Apps are%sblocked during this time", blockedOrNot));
     }
 
-
+    // deletes an event from the event list
     public void deleteEvent(View view) {
-        System.out.println(Event.eventsList);
         Event.eventsList.remove(event);
-        System.out.println(Event.eventsList);
         finish();
     }
 
+    // closes the info page
     public void closeEventInfo(View view) {
         finish();
     }

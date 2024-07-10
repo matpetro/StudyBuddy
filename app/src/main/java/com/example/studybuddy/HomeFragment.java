@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import java.util.Calendar;
 
+// Home fragment or home page of the main activity
 public class HomeFragment extends Fragment {
 
     ListView upcomingEventsView;
@@ -26,6 +27,7 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+    // Need this on resume to ensure the upcoming events list is updated properly
     @Override
     public void onResume() {
         super.onResume();
@@ -36,7 +38,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // grabbing our calender view by ID
         CalendarView calendarView = view.findViewById(R.id.calendarView);
-        // when user touches a date
+        // when user touches a date, take them to the daily calender view
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             Calendar selectedDate = Calendar.getInstance();
             selectedDate.set(year, month, dayOfMonth);
@@ -62,6 +64,7 @@ public class HomeFragment extends Fragment {
         upcomingEventsView.setEmptyView(view.findViewById(R.id.empty_view));
     }
 
+    // takes care of switching from the home fragment to the daily calender fragment, and sending the needed data over between fragments
     public void weeklyAction(int[] startOfWeek, int[] endOfWeek, int[] selectedDay){
         // switch fragments to the daily view
         Fragment calFrag = new CalendarFragment();
@@ -69,6 +72,7 @@ public class HomeFragment extends Fragment {
         bundle.putIntArray("startOfWeek", startOfWeek);
         bundle.putIntArray("endOfWeek", endOfWeek);
         bundle.putIntArray("selectedDay", selectedDay);
+        // info is sent as part of the fragment bundle
         calFrag.setArguments(bundle);
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.flFragment, calFrag);
@@ -79,6 +83,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    // Takes care of showing all the upcoming events in the upcming events list
     private void setUpcomingEventAdapter(View view)
     {
         UpcomingEventAdapter adapter = new UpcomingEventAdapter(view.getContext(), Event.eventsList.subList(0, Math.min(5, Event.eventsList.size())));

@@ -10,6 +10,7 @@ import android.view.WindowManager;
 
 import static android.content.Context.WINDOW_SERVICE;
 
+// Definition of the pop up blockage window
 public class BlockWindow {
 
     // declaring required variables
@@ -69,6 +70,7 @@ public class BlockWindow {
         }
     }
 
+    // Takes the user from the blocked window screen back to their phones home screen
     public void backToHome() {
         Intent startHomeScreen = new Intent(Intent.ACTION_MAIN);
         startHomeScreen.addCategory(Intent.CATEGORY_HOME);

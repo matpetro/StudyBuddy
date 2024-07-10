@@ -8,6 +8,7 @@ import java.util.Objects;
 
 public class Event implements Serializable
 {
+    // stores all the events that the users have added
     public static ArrayList<Event> eventsList = new ArrayList<Event>() {
         @Override
         public boolean add(Event mt) {
@@ -24,6 +25,7 @@ public class Event implements Serializable
         }
     };
 
+    // gets all the events belonging to a specific date and time
     public static ArrayList<Event> eventsForDateAndTime(LocalDate date, LocalTime time)
     {
         ArrayList<Event> events = new ArrayList<>();

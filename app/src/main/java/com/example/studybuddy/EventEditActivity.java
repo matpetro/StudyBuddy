@@ -49,29 +49,36 @@ public class EventEditActivity extends AppCompatActivity {
         initWidgets();
         setUpSpinners();
         Intent intent = getIntent();
+        // Gets the selected date and formats it
         int[] selectedDateInts = intent.getIntArrayExtra("selectedDate");
         selectedDate = LocalDate.of(selectedDateInts[2], selectedDateInts[1], selectedDateInts[0]);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
         eventDateTV.setText(String.format("Date: %s", selectedDate.format(formatter)));
     }
+
+    // Occurs when the user trys to save a new event
     public void saveEventAction(View view)
     {
+        // Get all the information from the user form
         String eventName = eventNameET.getText().toString();
         String desc = descET.getText().toString();
         boolean blockApps = switchButton.isChecked();
         LocalTime startTime = stringToLocalTime((String) startTimeSpinner.getSelectedItem());
         LocalTime endTime = stringToLocalTime((String) endTimeSpinner.getSelectedItem());
 
+        // Ensure times and name for event makes sense, if they do then add it to the list and finish the activity
         if (startTime.isAfter(endTime)){
             Toast.makeText(this, "End Time can not be before Start Time!", Toast.LENGTH_SHORT).show();
         } else if (eventName.isEmpty()){
-            Toast.makeText(this, "Event Name Can not be empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Event Name can not be empty", Toast.LENGTH_SHORT).show();
         } else {
             Event newEvent = new Event(eventName, selectedDate, startTime, endTime, desc, blockApps);
             Event.eventsList.add(newEvent);
             finish();
         }
     }
+
+    // Gets all the form widgets
     private void initWidgets()
     {
         eventNameET = findViewById(R.id.eventNameET);
@@ -82,6 +89,7 @@ public class EventEditActivity extends AppCompatActivity {
         switchButton = findViewById(R.id.eventSwitch);
     }
 
+    // Sets up the hour spinners with the time from 0-24
     private void setUpSpinners(){
         List<String> times = generateTimes();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, times);
@@ -89,7 +97,7 @@ public class EventEditActivity extends AppCompatActivity {
         startTimeSpinner.setAdapter(adapter);
         endTimeSpinner.setAdapter(adapter);
 
-        // Set Default spinner values to be related to the current time
+        // Set Default spinner values to be related to the current time (Start is current hour and end is an hour after)
         LocalTime currentTime = LocalTime.now();
         LocalTime hourOnly = currentTime.withMinute(0);
         LocalTime hourAfter = hourOnly.plusHours(1);
@@ -102,6 +110,7 @@ public class EventEditActivity extends AppCompatActivity {
         endTimeSpinner.setSelection(times.indexOf(endHourString));
     }
 
+    // generates the times for the spinners in String format
     private List<String> generateTimes() {
         List<String> times = new ArrayList<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
@@ -116,6 +125,7 @@ public class EventEditActivity extends AppCompatActivity {
         return times;
     }
 
+    // Converts a string to local time
     private LocalTime stringToLocalTime(String timeString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return LocalTime.parse(timeString, formatter);

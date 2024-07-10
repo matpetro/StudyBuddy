@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class AppInfo {
 
-    // possible make this into a hashmap instead for each access
+    // Contains the information needed for each app on the phone
     public static HashMap<String, AppInfo> appInfoHashMap = new HashMap<>();
     public static boolean alwaysBlock = false;
     private String name;

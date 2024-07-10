@@ -19,6 +19,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// fragment that has all the blocked apps settings
 public class SettingsFragment extends Fragment {
 
     ListView listView;
@@ -37,6 +38,7 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        // Set up the fragment to reflect the stores settings
         context = view.getContext();
         listView = view.findViewById(R.id.appListView);
         SwitchMaterial switchButton = view.findViewById(R.id.keep_blocked_switch);
@@ -45,6 +47,7 @@ public class SettingsFragment extends Fragment {
         getAllApps();
     }
 
+    // get all the apps that the user can potentially block, and display them in a list
     public void getAllApps() {
         // TODO if does not work, may need to add permissions (QUERY_ALL_PACKAGES permissions)
         // filter out the system applications

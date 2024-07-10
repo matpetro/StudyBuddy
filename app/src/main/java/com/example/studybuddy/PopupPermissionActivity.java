@@ -14,6 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+// Activity that asks and directs users to allow for the app to display pop ups (to block specified apps)
 public class PopupPermissionActivity extends AppCompatActivity {
 
     Button popupPermDone;
@@ -31,6 +32,7 @@ public class PopupPermissionActivity extends AppCompatActivity {
         popupPermDone = findViewById(R.id.popupPermDone);
     }
 
+    // redirects user to the settings to switch on the permission
     public void checkPopupPermission(View view) {
         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -41,6 +43,7 @@ public class PopupPermissionActivity extends AppCompatActivity {
         handler.postDelayed(() -> popupPermDone.setVisibility(View.VISIBLE), 1000);
     }
 
+    // Once done, brings you back to the main activity
     public void nextScreenAction(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

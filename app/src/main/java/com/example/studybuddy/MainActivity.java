@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        // Set initial fragment
+        // Set initial fragment to be the home fragment
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.flFragment, new HomeFragment())
@@ -48,12 +48,14 @@ public class MainActivity extends AppCompatActivity {
         startService(new Intent(this, AppLockService.class));
     }
 
+    // This method allows for the calender logo to be highlighted upon switching fragments without any unwanted button push effects
     protected void highlightCalenderItem(){
         bottomNavigationView.setOnItemSelectedListener(null);
         bottomNavigationView.setSelectedItemId(R.id.nav_calendar);
         bottomNavigationView.setOnItemSelectedListener(item -> switchFragment(item.getItemId()));
     }
 
+    // Checks that the needed permissions have been provided by the user
     private void checkPermissions(){
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR, -1);
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // provides logic to switch fragments depending on the nav menu item selected
     private boolean switchFragment(int itemId) {
         Fragment selectedFragment = null;
 

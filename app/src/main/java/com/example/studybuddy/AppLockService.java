@@ -16,6 +16,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+// Service that will run in the background and determine if an app needs to be blocked
 public class AppLockService extends Service {
 
     public Context context = this;
@@ -31,22 +32,21 @@ public class AppLockService extends Service {
 
     @Override
     public void onCreate() {
-        //Toast.makeText(this, "Service created!", Toast.LENGTH_LONG).show();
-
         handler = new Handler();
+        // The criteria for showing a blocked screen is checked according to the defined delays
         runnable = () -> {
             String app = getForegroundApp();
             boolean hourlyBlock = checkHourlyBlock();
             if((AppInfo.alwaysBlock || hourlyBlock) && AppInfo.appInfoHashMap.containsKey(app) && AppInfo.appInfoHashMap.get(app).isBlocked()){
                 showBlockScreen();
             }
-            //Toast.makeText(context, "Service is still running", Toast.LENGTH_LONG).show();
             handler.postDelayed(runnable, 10000);
         };
 
         handler.postDelayed(runnable, 15000);
     }
 
+    // checks if there is any scheduled blocks at the specific time
     private boolean checkHourlyBlock() {
         LocalTime currTime = LocalTime.now();
         List<Event> events = Event.eventsList.stream().filter(event -> event.getDate().equals(LocalDate.now())
@@ -55,12 +55,13 @@ public class AppLockService extends Service {
 
     }
 
+    // Once the service is removed, sto running the check
     @Override
     public void onDestroy() {
         handler.removeCallbacks(runnable);
-        Toast.makeText(this, "Service stopped", Toast.LENGTH_LONG).show();
     }
 
+    // Determines what method is currently in the foreground using usage stats
     public String getForegroundApp() {
         String currentApp = "NULL";
         UsageStatsManager usm = (UsageStatsManager) this.getSystemService(Context.USAGE_STATS_SERVICE);
@@ -78,6 +79,8 @@ public class AppLockService extends Service {
 
         return currentApp;
     }
+
+    // Shows the blocked screen window to prevent user from viewing blocked app
     public void showBlockScreen(){
         BlockWindow window= new BlockWindow(this);
         window.open();

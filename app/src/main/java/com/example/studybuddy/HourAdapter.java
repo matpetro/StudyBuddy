@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-// the adapter is the bridge between the daily view and its data
+// the adapter is the bridge between the daily view and its scheduled event data
 public class HourAdapter extends ArrayAdapter<HourEvent>
 {
     public HourAdapter(@NonNull Context context, List<HourEvent> hourEvents)
@@ -28,6 +28,7 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
     {
+        // goes through each hour and sets the events for that hour
         HourEvent event = getItem(position);
 
         if (convertView == null)
@@ -46,6 +47,7 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         timeTV.setText(time.format(formatter));
     }
 
+    // Determines what events to set in the cell view
     private void setEvents(View convertView, ArrayList<Event> events)
     {
         TextView event1 = convertView.findViewById(R.id.event1);
@@ -78,6 +80,7 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         }
         else
         {
+            // When there is more than 3, just say there is more events
             setEvent(event1, events.get(0));
             setEvent(event2, events.get(1));
             event3.setVisibility(View.VISIBLE);
@@ -86,6 +89,7 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         }
     }
 
+    // sets event to be visible with the correct event name and sets the event info activity to start upon click of an event tile
     private void setEvent(TextView textView, Event event)
     {
         textView.setText(event.getName());
@@ -99,6 +103,7 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         });
     }
 
+    // Hides event if there is not enough to show
     private void hideEvent(TextView tv)
     {
         tv.setVisibility(View.INVISIBLE);

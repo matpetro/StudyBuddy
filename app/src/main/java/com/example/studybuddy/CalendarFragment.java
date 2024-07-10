@@ -22,7 +22,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-
+// fragment of the main activity that deals with the daily calender
 public class CalendarFragment extends Fragment {
 
     private Context context;
@@ -55,20 +55,21 @@ public class CalendarFragment extends Fragment {
         daySelected();
     }
 
+    // The on resume ensures that whenever a modification took place the list views will be correctly updated
     @Override
     public void onResume() {
         super.onResume();
         setHourAdapter();
     }
 
+    // Sets up the picker so that the correct dates are displaying
     private void setUpPicker(){
-        // get the info from this intent
+        // gets the info from the main fragment if there is any, if not just uses the present date
         int[] startDate;
         int[] endDate;
         int[] chosenDate;
         if (getArguments() != null && getArguments().containsKey("startOfWeek")
                 && getArguments().containsKey("endOfWeek") && getArguments().containsKey("selectedDay")){
-            System.out.println("GOT THE PASSED ITEMS CORRECTLY");
             // get the info from this intent
             startDate = getArguments().getIntArray("startOfWeek");
             endDate = getArguments().getIntArray("endOfWeek");
@@ -80,7 +81,6 @@ public class CalendarFragment extends Fragment {
             int dayOfMonth = selectedDate.get(Calendar.DAY_OF_MONTH);
 
             int weekOfYear = selectedDate.get(Calendar.WEEK_OF_YEAR);
-            //System.out.println("week of year: "+ weekOfYear);
             selectedDate.clear();
             selectedDate.set(Calendar.WEEK_OF_YEAR, weekOfYear);
             selectedDate.set(Calendar.YEAR, year);
@@ -103,6 +103,7 @@ public class CalendarFragment extends Fragment {
         currentSelectedDate = LocalDate.of(chosenDate[2], chosenDate[1], chosenDate[0]);
     }
 
+    // Changes the list view to show any scheduled events for the selected date
     private void daySelected() {
         OnDateSelectedListener listener = date -> {
             if (date != null) {
@@ -113,6 +114,7 @@ public class CalendarFragment extends Fragment {
         mPicker.getSelectedDate(listener);
     }
 
+    // Used to forward the calender by a weeks
     public void forwardCalender(View view) {
         currentStartDate = currentStartDate.plusDays(7);
         currentEndDate = currentEndDate.plusDays(7);
@@ -123,6 +125,7 @@ public class CalendarFragment extends Fragment {
         setHourAdapter();
     }
 
+    // used to go backwards by a week
     public void goBackInCalender(View view) {
         currentStartDate = currentStartDate.minusDays(7);
         currentEndDate = currentEndDate.minusDays(7);
@@ -133,6 +136,7 @@ public class CalendarFragment extends Fragment {
         setHourAdapter();
     }
 
+    // Sets the adapter that will have all the hours of the day and any associated events
     private void setHourAdapter()
     {
         hourListView = v.findViewById(R.id.hourListView);
@@ -140,6 +144,7 @@ public class CalendarFragment extends Fragment {
         hourListView.setAdapter(hourAdapter);
     }
 
+    // Gets the events for each hour on the list
     private ArrayList<HourEvent> hourEventList()
     {
         ArrayList<HourEvent> list = new ArrayList<>();
@@ -155,6 +160,7 @@ public class CalendarFragment extends Fragment {
         return list;
     }
 
+    // Opens the new event activity
     public void newEventAction(View view)
     {
         Intent intent = new Intent(context, EventEditActivity.class);
