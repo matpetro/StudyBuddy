@@ -1,14 +1,17 @@
 package com.example.studybuddy;
 
 import android.app.Service;
+import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.widget.Toast;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -22,6 +25,8 @@ public class AppLockService extends Service {
     public Context context = this;
     public Handler handler = null;
     public static Runnable runnable = null;
+
+    private boolean isBlockWindowOpen = false;
     public AppLockService() {
     }
 
@@ -36,6 +41,7 @@ public class AppLockService extends Service {
         // The criteria for showing a blocked screen is checked according to the defined delays
         runnable = () -> {
             String app = getForegroundApp();
+            System.out.println(app);
             boolean hourlyBlock = checkHourlyBlock();
             if((AppInfo.alwaysBlock || hourlyBlock) && AppInfo.appInfoHashMap.containsKey(app) && AppInfo.appInfoHashMap.get(app).isBlocked()){
                 showBlockScreen();
@@ -58,32 +64,40 @@ public class AppLockService extends Service {
     // Once the service is removed, sto running the check
     @Override
     public void onDestroy() {
+        System.out.println("Service was destroyed");
         handler.removeCallbacks(runnable);
     }
 
     // Determines what method is currently in the foreground using usage stats
     public String getForegroundApp() {
-        String currentApp = "NULL";
-        UsageStatsManager usm = (UsageStatsManager) this.getSystemService(Context.USAGE_STATS_SERVICE);
-        long time = System.currentTimeMillis();
-        List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000 * 1000, time);
-        if (appList != null && !appList.isEmpty()) {
-            SortedMap<Long, UsageStats> mySortedMap = new TreeMap<>();
-            for (UsageStats usageStats : appList) {
-                mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
-            }
-            if (!mySortedMap.isEmpty()) {
-                currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
+        String packageNameByUsageStats = "NULL";
+        UsageStatsManager mUsageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+        // look at events in past hour and determine the most recent move to foreground
+        long start = System.currentTimeMillis() - (3600 * 1000);
+        long end = System.currentTimeMillis() + (10 * 1000);
+        System.out.println("Times = " + start + " " + end);
+        UsageEvents usageEvents = mUsageStatsManager.queryEvents(start, end);
+        UsageEvents.Event event = new UsageEvents.Event();
+        while (usageEvents.hasNextEvent()) {
+            usageEvents.getNextEvent(event);
+            if (event.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+                packageNameByUsageStats = event.getPackageName();
             }
         }
 
-        return currentApp;
+        return packageNameByUsageStats;
     }
 
     // Shows the blocked screen window to prevent user from viewing blocked app
     public void showBlockScreen(){
-        BlockWindow window= new BlockWindow(this);
-        window.open();
+        if (!isBlockWindowOpen) {  // Check if the BlockWindow is already open
+            isBlockWindowOpen = true;
+            BlockWindow window = new BlockWindow(this);
+            window.open();
+
+            // Set a listener to reset the flag when the BlockWindow is closed
+            window.setOnCloseListener(() -> isBlockWindowOpen = false);
+        }
     }
 
 }

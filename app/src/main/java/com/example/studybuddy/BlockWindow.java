@@ -18,6 +18,7 @@ public class BlockWindow {
     private View mView;
     private WindowManager.LayoutParams mParams;
     private WindowManager mWindowManager;
+    private OnCloseListener onCloseListener;
 
     public BlockWindow(Context context){
         this.context=context;
@@ -62,12 +63,19 @@ public class BlockWindow {
             // remove the view from the window
             ((WindowManager)context.getSystemService(WINDOW_SERVICE)).removeView(mView);
             backToHome();
+            if (onCloseListener != null) {
+                onCloseListener.onClose();
+            }
 
             // the above steps are necessary when you are adding and removing
             // the view simultaneously, it might give some exceptions
         } catch (Exception e) {
             Log.d("Error2",e.toString());
         }
+    }
+
+    public void setOnCloseListener(OnCloseListener listener) {
+        this.onCloseListener = listener;
     }
 
     // Takes the user from the blocked window screen back to their phones home screen
@@ -77,5 +85,9 @@ public class BlockWindow {
         startHomeScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startHomeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(startHomeScreen);
+    }
+
+    public interface OnCloseListener {
+        void onClose();
     }
 }
