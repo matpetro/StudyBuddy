@@ -4,7 +4,6 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 
@@ -16,21 +15,13 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-    private static final String SHARED_PREF_KEY = "shared_pref";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,29 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Set listener for navigation item selection
         bottomNavigationView.setOnItemSelectedListener(item -> switchFragment(item.getItemId()));
-
-//        SaveDataHelper.saveEvents(this);
-//        SaveDataHelper.loadEvents();
-//        GsonBuilder gsonBuilder = new GsonBuilder();
-//        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
-//        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
-//        gsonBuilder.registerTypeAdapter(LocalTime.class, new LocalTimeSerializer());
-//        gsonBuilder.registerTypeAdapter(LocalTime.class, new LocalTimeDeserializer());
-//        Gson gson = gsonBuilder.create();
-//        Event test = new Event("fds", LocalDate.now(), LocalTime.now(), LocalTime.now(), "dsadsa", false);
-//        ArrayList<Event> x = new ArrayList<>();
-//        x.add(test);
-//        String text = gson.toJson(x);
-//        System.out.println("Does Gson Work?? " + text);
-//        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_KEY, MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//
-//        editor.putString("p", text);
-//        editor.apply();
-//
-//        Type type = new TypeToken<ArrayList<Event>>(){}.getType();
-//        ArrayList<Event> y = gson.fromJson(sharedPreferences.getString("p", null), type);
-//        System.out.println("Resulting package: " + y);
 
         checkPermissions();
         loadData();

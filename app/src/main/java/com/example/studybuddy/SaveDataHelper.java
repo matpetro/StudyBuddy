@@ -70,7 +70,6 @@ public class SaveDataHelper {
         }
 
         String text = gson.toJson(blockedVals);
-        System.out.println(text);
         // Save to shared preferences
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -85,7 +84,6 @@ public class SaveDataHelper {
         Type type = new TypeToken<HashMap<String, Boolean>>(){}.getType();
         HashMap<String, Boolean> results = gson.fromJson(sharedPreferences.getString(BLOCKED_APPS_KEY, null), type);
         if (results != null && !results.isEmpty()){
-            System.out.println(results.toString());
             return results;
         }
         return null;

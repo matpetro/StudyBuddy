@@ -2,21 +2,15 @@ package com.example.studybuddy;
 
 import android.app.Service;
 import android.app.usage.UsageEvents;
-import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
-import android.text.TextUtils;
-import android.widget.Toast;
 
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 // Service that will run in the background and determine if an app needs to be blocked
@@ -75,7 +69,6 @@ public class AppLockService extends Service {
         // look at events in past hour and determine the most recent move to foreground
         long start = System.currentTimeMillis() - (3600 * 1000);
         long end = System.currentTimeMillis() + (10 * 1000);
-        System.out.println("Times = " + start + " " + end);
         UsageEvents usageEvents = mUsageStatsManager.queryEvents(start, end);
         UsageEvents.Event event = new UsageEvents.Event();
         while (usageEvents.hasNextEvent()) {
