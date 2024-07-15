@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,10 +42,13 @@ public class SettingsFragment extends Fragment {
         // Set up the fragment to reflect the stores settings
         context = view.getContext();
         listView = view.findViewById(R.id.appListView);
+        getAllApps();
         SwitchMaterial switchButton = view.findViewById(R.id.keep_blocked_switch);
         switchButton.setChecked(AppInfo.alwaysBlock); // set the status as we stored it
-        switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> AppInfo.alwaysBlock = isChecked);
-        getAllApps();
+        switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            AppInfo.alwaysBlock = isChecked;
+            SaveDataHelper.saveBlockedApps(context);
+        });
     }
 
     // get all the apps that the user can potentially block, and display them in a list
@@ -52,15 +56,19 @@ public class SettingsFragment extends Fragment {
         // TODO if does not work, may need to add permissions (QUERY_ALL_PACKAGES permissions)
         // filter out the system applications
         if (AppInfo.appInfoHashMap.isEmpty()){
+            HashMap<String, Boolean> blockedApps = SaveDataHelper.loadBlockedApps(context);
             List<ApplicationInfo> allApps = context.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA).stream()
                     .filter(appInfo -> ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0 || appInfo.packageName.equals("com.google.android.youtube")) && !(appInfo.packageName.equals("com.example.studybuddy")))
                     .collect(Collectors.toList());
 
             for (int ind = 0; ind < allApps.size(); ind++){
                 ApplicationInfo appInfo = allApps.get(ind);
-                AppInfo conciseAppInfo = new AppInfo(appInfo.loadLabel(context.getPackageManager()).toString(), appInfo.packageName, appInfo.loadIcon(context.getPackageManager()), false);
+                boolean blocked = blockedApps != null && Boolean.TRUE.equals(blockedApps.getOrDefault(appInfo.packageName, false));
+                AppInfo conciseAppInfo = new AppInfo(appInfo.loadLabel(context.getPackageManager()).toString(), appInfo.packageName, appInfo.loadIcon(context.getPackageManager()), blocked);
                 AppInfo.appInfoHashMap.put(appInfo.packageName, conciseAppInfo);
             }
+            AppInfo.alwaysBlock = blockedApps != null && Boolean.TRUE.equals(blockedApps.getOrDefault("alwaysBlock", false));
+
         }
 
         AppAdapter appAdapter = new AppAdapter(context, R.layout.app_cell);

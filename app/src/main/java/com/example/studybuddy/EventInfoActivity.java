@@ -52,6 +52,7 @@ public class EventInfoActivity extends AppCompatActivity {
     // deletes an event from the event list
     public void deleteEvent(View view) {
         Event.eventsList.remove(event);
+        SaveDataHelper.saveEvents(this);
         finish();
     }
 

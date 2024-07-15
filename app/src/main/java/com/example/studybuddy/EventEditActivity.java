@@ -74,6 +74,7 @@ public class EventEditActivity extends AppCompatActivity {
         } else {
             Event newEvent = new Event(eventName, selectedDate, startTime, endTime, desc, blockApps);
             Event.eventsList.add(newEvent);
+            SaveDataHelper.saveEvents(this);
             finish();
         }
     }
